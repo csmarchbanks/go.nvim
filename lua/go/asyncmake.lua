@@ -289,10 +289,16 @@ function M.make(...)
     end
   end
 
+  local workfolder = util.work_path()
+  if workfolder == nil then
+    workfolder = "."
+  end
+
   local cmdstr = vim.fn.join(cmd, " ") -- cmd list run without shell, cmd string run with shell
   -- releative dir does not work without shell
   log("cmd ", cmdstr)
   _GO_NVIM_CFG.job_id = vim.fn.jobstart(cmdstr, {
+    cwd = workfolder,
     on_stderr = on_event,
     on_stdout = on_event,
     on_exit = on_event,
